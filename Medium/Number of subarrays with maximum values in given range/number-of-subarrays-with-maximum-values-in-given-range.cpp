@@ -14,12 +14,13 @@ class Solution{
         while(j<n){
             if(a[j]>k){
                 i = j+1;
-                j++;
+                
             }else{
                 ans+=j-i+1;
-                j++;
+                
                 
             }
+            j++;
         }
         return ans;
     }
