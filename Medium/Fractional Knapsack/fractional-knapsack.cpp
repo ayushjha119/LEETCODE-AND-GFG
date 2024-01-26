@@ -18,30 +18,35 @@ struct Item{
 */
 
 
-
 class Solution
 {
     public:
     //Function to get the maximum total value in the knapsack.
-    double fractionalKnapsack(int W, Item arr[], int n)
+    static bool comp(Item a, Item b) 
     {
-        // Your code here
-          sort(arr, arr+n, [](auto&a, auto&b) {
-        return a.value*b.weight > b.value*a.weight;
-    });
-        
-        double value = 0;
-    for (int i = 0; i < n; i++) {
-        auto& e = arr[i];
-        if (e.weight < W) {
-            value += e.value;
-            W -= e.weight;
-        } else {
-            value += double(e.value)*W/e.weight;
-            break;
-        }
+        return ((double) a.value / a.weight) > ((double) b.value / b.weight);   
     }
-    return value;
+
+    double fractionalKnapsack(int w, Item arr[], int n)
+    {
+        sort(arr, arr + n, comp);
+        double maxP = 0, currWt = 0;
+        
+        for(int i = 0; i < n; i++) 
+        {
+            if(currWt + arr[i].weight <= w) 
+            {
+                maxP += arr[i].value;
+                currWt += arr[i].weight;
+            }
+            else
+            {
+                maxP += double((arr[i].value * (w - currWt)) / arr[i].weight);
+                break;
+            }
+        }
+        
+        return maxP;
     }
         
 };
@@ -53,7 +58,7 @@ int main()
 	int t;
 	//taking testcases
 	cin>>t;
-	cout<<setprecision(2)<<fixed;
+	cout<<setprecision(6)<<fixed;
 	while(t--){
 	    //size of array and weight
 		int n, W;
